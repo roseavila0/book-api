@@ -18,6 +18,10 @@ const dataPath = path.join(__dirname, '../data/publishers.json');
 
     //leemos los libros
     const readPublishers= () => {
+          // Si el archivo no existe, creamos un archivo vacío con un arreglo
+        if (!fs.existsSync(dataPath)){
+        fs.writeFileSync(dataPath, '[]');
+        }
         const data = fs.readFileSync(dataPath, 'utf-8'); //usamos 'utf-8' porque ayudar a convertir la info que viene siendo buffer y nos la da en formato string, osea la vuelve legible.
         return JSON.parse(data); // la información en formato json se retorna en javascript pero la convertimos usando JSON.parse 
     };
@@ -34,7 +38,17 @@ const dataPath = path.join(__dirname, '../data/publishers.json');
         };
 
         publishers.push(newPublisher);  //agregamos el nuevo libro a la lista del json (conviertiendo con JSON.stringify a formato json)
-        fs.writeFileSync(dataPath,JSON.stringify(publisher, null,2));  //el null ayuda a que no haya cambios o reemplazos y el 2 ayuda con los espacios en el formato json.
+        fs.writeFileSync(dataPath,JSON.stringify(publishers, null,2));  //el null ayuda a que no haya cambios o reemplazos y el 2 ayuda con los espacios en el formato json.
+        console.log("New publisher added.");
     };
 
-module.exports = {readPublishers, writePublishers}
+    const searchPublisher = (searchInfo) => {
+        const publishersrs = readPublishers(); //leemos las editoriales
+        const result = publishers.find(publisher => 
+        publisher.name.toLowerCase() === searchInfo.toLowerCase()||
+        publisher.nationality.toLowerCase() === searchInfo.toLowerCase()
+            )
+            return result || { error: "Publisher not found" }; 
+    };
+        
+module.exports = {readPublishers, writePublishers, searchPublisher}

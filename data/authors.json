@@ -1,12 +1,27 @@
 [
-    {
-      "id": "1",
-      "name": "Alber Camus",
-      "nationality": "Frances"
-    },
-    {
-      "id": "2",
-      "name": "Susan Sontag",
-      "nationality": "Estadounidense"
-    }
-  ]
+  {
+    "id": "1",
+    "name": "Alber Camus",
+    "nationality": "Frances"
+  },
+  {
+    "id": "2",
+    "name": "Susan Sontag",
+    "nationality": "Estadounidense"
+  },
+  {
+    "id": "22124fd6-139a-45f1-9441-80852a0b1207",
+    "name": "Carlos Ruíz Safón",
+    "nationality": "España"
+  },
+  {
+    "id": "81bdd111-527b-4d3c-a739-4667ab340dac",
+    "name": "Gabriel García Márquez ",
+    "nationality": "Colombiano"
+  },
+  {
+    "id": "6779d30b-5b20-4efb-af68-27ad866aaf16",
+    "name": "Gabriel García Márquez colombiano",
+    "nationality": "colombiano"
+  }
+]

@@ -22,6 +22,10 @@ const dataPath = path.join(__dirname, '../data/authors.json');
 
     //leemos los autores
     const readAuthors= () => {
+         // Si el archivo no existe, creamos un archivo vacío con un arreglo
+        if (!fs.existsSync(dataPath)){
+        fs.writeFileSync(dataPath, '[]');
+      }
         const data = fs.readFileSync(dataPath, 'utf-8'); 
         return JSON.parse(data); // la información en formato json se retorna en javascript pero la convertimos usando JSON.parse 
 
@@ -39,7 +43,17 @@ const dataPath = path.join(__dirname, '../data/authors.json');
         };
 
         authors.push(newAuthor);  //agregamos el nuevo autor a la lista del json (conviertiend con JSON.stringify a formato json)
-        fs.writeFileSync(dataPath,JSON.stringify(author, null,2));   //el null ayuda a que no haya cambios o reemplazos y el 2 ayuda con los espacios en el formato json.
+        fs.writeFileSync(dataPath,JSON.stringify(authors, null,2));   //el null ayuda a que no haya cambios o reemplazos y el 2 ayuda con los espacios en el formato json.
+        console.log("New author added.");
     };
 
-module.exports = {readAuthors, writeAuthors}
+    const searchAuthor = (searchInfo) => {
+        const authors = readAuthors(); //leemos los autores
+        const result = authors.find(author => 
+            author.name.toLowerCase() === searchInfo.toLowerCase()||
+            author.nationality.toLowerCase() === searchInfo.toLowerCase()
+        )
+        return result || { error: "Author not found" }; 
+    };
+
+module.exports = {readAuthors, writeAuthors,searchAuthor}

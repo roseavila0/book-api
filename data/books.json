@@ -1,12 +1,22 @@
 [
-    {
-      "id": "1",
-      "name": "El extranjero",
-      "author": "Albert Camus"
-    },
-    {
-      "id": "2",
-      "name": "Sobre la fotografía",
-      "author": "Susan Sontag"
-    }
-  ]
+  {
+    "id": "1",
+    "name": "El extranjero",
+    "author": "Albert Camus"
+  },
+  {
+    "id": "2",
+    "name": "Sobre la fotografía",
+    "author": "Susan Sontag"
+  },
+  {
+    "id": "7f2d98af-fb4d-45d2-8c5a-04d6c3001c20",
+    "name": "cien años de soledad Gabriel Garcia",
+    "author": "Marquez"
+  },
+  {
+    "id": "7baea2c7-e2a2-471f-bbf6-854563a6e6de",
+    "name": "cien años de soledad gabriel garcia",
+    "author": "marquez"
+  }
+]
