@@ -10,13 +10,18 @@
     "author": "Susan Sontag"
   },
   {
-    "id": "7f2d98af-fb4d-45d2-8c5a-04d6c3001c20",
-    "name": "cien años de soledad Gabriel Garcia",
-    "author": "Marquez"
+    "id": "a894b22b-7cf5-4563-aad1-6e09f94b0ba7",
+    "name": "Cien años de soledad",
+    "author": "Gabriel García Márquez"
   },
   {
-    "id": "7baea2c7-e2a2-471f-bbf6-854563a6e6de",
-    "name": "cien años de soledad gabriel garcia",
-    "author": "marquez"
+    "id": "ba6a3817-c2c8-4ee9-9a16-5a01c8d6fa6b",
+    "name": "La sombra del viento",
+    "author": "Carlos Ruíz Safón"
+  },
+  {
+    "id": "dd93a0e7-44fa-4d4e-a842-ce30dfb03c37",
+    "name": "Rebelión en la granja",
+    "author": "George Orwell"
   }
 ]

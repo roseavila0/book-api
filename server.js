@@ -14,15 +14,26 @@ const server = net.createServer ((socket) => {
         const message = data.toString().trim();
         console.log("Data received: ", message);
 
-            
-        // Dividimos el mensaje en partes (Ejemplo: "GET authors" o "ADD books Nombre Autor")
-        const parts = message.split(' '); 
-        const command = parts[0]; //// Aquí guardamos el primer dato, que puede ser GET o ADD
-        const category = parts[1]; //// Aquí guardamos el segundo dato, que será "authors", "books" o "publishers"
+    
+        // Dividir el mensaje en partes usando una expresión regular  (/\"([^"]+)\"/g)  para encontrar, capturar argumentos entre comillas ----Devuelve un array con los valores que encontró, incluyendo las comillas.
+        //const args = message.match(/(?:[^"]\S*|"[^"]*")+/g);
+        //console.log('Args:', args);  // Verificar los argumentos recibidos
 
-        switch (command) { 
+        //const args = message.split(/\s+/);  // Dividir por espacios
+        const args = message.match(/(?:[^\s"]+|"[^"]*")+/g);
+        console.log('Args:', args);  // Verificar los argumentos
+
+        if (!args || args.length < 2) {
+            socket.write("Invalid command format\n");
+            return;
+        }
+
+        const command = args[0].toUpperCase();   //tranforma a Mayuscula los comandos y 
+        const category = args[1].toLowerCase();       //en minuscula las categorias.
+
+        switch (command) {
             case "GET": // Si el comando es GET
-                switch (category) { 
+                switch (category) {
                     case "authors":
                         const authors = JSON.parse(authorsController.showAuthors());
                         socket.write(`Authors: ${JSON.stringify(authors, null, 2)}\n`);
@@ -36,58 +47,43 @@ const server = net.createServer ((socket) => {
                         socket.write(`Publishers: ${JSON.stringify(publishers, null, 2)}\n`);
                         break;
                     default:
-                        socket.write("Unrecognized category\n"); // Si no es alguna categoria de las que dejamos indicadas: authors, books o publishers
+                        socket.write("Unrecognized category\n");
                 }
                 break;
 
             case "ADD": // Si el comando es ADD
-            if (parts.length < 4) {
-                socket.write("Invalid ADD command. Please use: ADD 'category' 'name' \n");
-                return;
-            }
+                if (args.length < 4) {
+                    socket.write("Invalid ADD command. Please use: ADD \"category\" \"name\" \"info\" \n");
+                    return;
+                }
 
-            const regex = /ADD books "(.?)" "(.?)"/;
-            const match = message.match(regex);
-            //Captura el nombre y la información adicional
-            //const name = parts.slice(2, -1).join(" "); // Junta todos los elementos entre el 2º y penúltimo
-            //const additionalInfo = parts.slice(-1).join(" "); // El último valor será la información adicional (nacionalidad, autor, etc.)
+                // Se eliminan las comillas con .replace(/\"/g, "") para obtener el texto real.
+                const name = args[2].replace(/"/g, "").trim();    //RECUERDAAAAAAAAAAAAAAAAAAA .trim() Asegura que no haya espacios extra al inicio o final.
+                const additionalInfo = args[3].replace(/"/g, "").trim();
 
-            //const name = parts.slice(2, parts.length - 1).join(" ");
-            //const author = parts.slice(parts.length - 1).join(" ");
+                switch (category) {
+                    case "authors":
+                        const nationality = additionalInfo;
+                        const newAuthor = authorsController.writeAuthors({ name, nationality });
+                        socket.write(`Author added: ${JSON.stringify(newAuthor)}\n`);
+                        break;
 
-            const name = parts.slice(2, parts.length - 1).join(" "); // Captura el título completo
-            const author = parts.slice( parts.length - 1).join(" "); // Captura el autor completo
+                    case "books":
+                        const author = additionalInfo;
+                        const newBook = booksController.writeBooks({ name, author });
+                        socket.write(`Book added: ${JSON.stringify(newBook)}\n`);
+                        break;
 
-            switch (category) {
-                case "authors":
-                    const nationality = additionalInfo; // Último valor (nacionalidad)
-                    const newAuthor = authorsController.writeAuthors({ name, nationality });
-                    socket.write(`Author added: ${JSON.stringify(newAuthor)}\n`);
-                    break;
+                    case "publishers":
+                        const country = additionalInfo;
+                        const newPublisher = publishersController.writePublishers({ name, country });
+                        socket.write(`Publisher added: ${JSON.stringify(newPublisher)}\n`);
+                        break;
 
-                /*case "books":
-                    const author = additionalInfo; // Último valor (autor)
-                    const newBook = booksController.writeBooks({ name, author });
-                    socket.write(`Book added: ${JSON.stringify(newBook)}\n`);
-                    break;*/
-
-              case "books":
-                //const newBook = booksController.writeBooks({ name, author });
-                //socket.write(`Book added: ${JSON.stringify(newBook)}\n`);
-                const newBook = booksController.writeBooks({ name, author });
-                socket.write(`Book added: ${JSON.stringify(newBook)}\n`);
+                    default:
+                        socket.write("Unrecognized category\n");
+                }
                 break;
-
-                case "publishers":
-                    const country = additionalInfo; // Último valor (país)
-                    const newPublisher = publishersController.writePublishers({ name, country });
-                    socket.write(`Publisher added: ${JSON.stringify(newPublisher)}\n`);
-                    break;
-
-                default:
-                    socket.write("Unrecognized category\n");
-            }
-            break;
 
             default:
                 socket.write("Unrecognized command\n");

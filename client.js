@@ -3,8 +3,6 @@ const {authorsController} = require ('./controllers/authorsController');
 const {booksController} = require ('./controllers/booksController')
 const {publishersController} = require ('./controllers/publishersController');
 const readline = require('readline');
-//const {question} = require('readline-sync');  //instalamos readline-syn para poder usar la funció question y hacer preguntas en la consola. 
-
 
 const PORT = 8080;
 const HOST = 'localhost';
@@ -20,12 +18,15 @@ const client = net.createConnection({port: PORT, host: HOST}, () =>{
     console.log("Hello client, you have connected to the server.");
     promptMenu(); // Llamamos al menú de comandos inmediatamente después de conectar
 
+});
+
 client.on('data', (data) =>{
     console.log("\nServer response:", data.toString().trim());
     promptMenu();
-})
-
 });
+
+
+
 
 //funcion para llamar el menú de comandos /opciones.
 function promptMenu() { 
@@ -49,11 +50,18 @@ function promptMenu() {
     rl.close(); // Cerrar la interfaz
     client.end(); // Cerrar la conexión al servidor
     return;
-    } 
+} else if (input.trim() === '') {
+    console.log("Please enter a valid command.");
+} else {
+    // Aquí puedes procesar el comando cuando sea válido
+    // Esto asegurará que se vuelva a mostrar el menú después de cada interacción
+    
+
+//promptMenu();  // Esto asegura que el menú se muestre después de cada comando
     
     if (input.startsWith("GET")) {  //sino verificamos si el comando empieza con GET
     client.write(input);
-    //promptMenu();
+    
     
     } else if (input.startsWith("ADD")) { //o sino verificamos si el comando empieza con ADD
     const parts = input.split(" ");
@@ -63,24 +71,21 @@ function promptMenu() {
     if (category === "authors") {
     rl.question("Input an author: ", (authorsName) => {
         rl.question("Input the author's nationality: ", (authorsNationality) => {
-            client.write(`ADD authors ${authorsName} ${authorsNationality}`);
-            //promptMenu();
+            client.write(`ADD authors "${authorsName}" "${authorsNationality}"`);
         });
     });
     
     } else if (category === "books") {
         rl.question("Input the book's title: ", (bookName) => {
             rl.question("Input the book's author: ", (bookAuthor) => {
-                client.write(`ADD books ${bookName} ${bookAuthor}`);
-                //promptMenu();
+                client.write(`ADD books "${bookName}" "${bookAuthor}"`);
             });
         });
    
     } else if (category === "publishers") {
         rl.question("Input the publisher's name: ", (publisherName) => {
             rl.question("Input the publisher's country: ", (publisherCountry) => {
-                client.write(`ADD publishers ${publisherName} ${publisherCountry}`);
-                //promptMenu();
+                client.write(`ADD publishers "${publisherName}" "${publisherCountry}"`);
             });
         });
 
@@ -91,6 +96,7 @@ function promptMenu() {
 } else {
     console.log("Unrecognized command\n");
     //promptMenu();
+}
 }
 });
 }

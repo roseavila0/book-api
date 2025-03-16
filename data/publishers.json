@@ -1,4 +1,5 @@
-[{
+[
+  {
     "id": "1",
     "name": "Gallimard",
     "country": "Francia"
@@ -7,5 +8,15 @@
     "id": "2",
     "name": "Farrar, Straus & Giroux",
     "country": "Estados Unidos"
+  },
+  {
+    "id": "8608f5c9-5044-40d1-a73f-f86888031ca9",
+    "name": "Alianza Editorial",
+    "country": "España"
+  },
+  {
+    "id": "3eba1010-0eef-466d-ab0b-362c11159eba",
+    "name": "Editorial Sudamericana",
+    "country": "Argentina"
   }
 ]
