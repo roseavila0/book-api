@@ -85,6 +85,43 @@ const server = net.createServer ((socket) => {
                 }
                 break;
 
+            case "SEARCH": // Si el comando es SEARCH
+            console.log("Processing SEARCH command for category:", category); //PARA DEPURAR****
+                 if (args.length < 3) {  // Se necesita al menos un criterio de búsqueda
+                    socket.write("Invalid SEARCH command. Please use: SEARCH \"category\" \"search info\"\n");
+                    return;
+                }
+        
+                const searchInfo = args[2].replace(/"/g, "").trim(); // Eliminar comillas y espacios extra
+                console.log("Search Info: ", searchInfo); // Ver qué se está pasando al buscar //PARA DEPURAR****
+                
+                switch (category) {
+                    case "authors":
+                        const authorsResult = authorsController.searchAuthor(searchInfo);
+                        console.log("Authors Result:", authorsResult);  // Imprime el resultado de búsqueda //PARA DEPURAR****
+                        //socket.write(`Search result: ${JSON.stringify(authorsResult, null, 2)}\n`);
+                        socket.write(authorsResult);
+                        break;
+                    case "books":
+                        const booksResult = booksController.searchBook(searchInfo);
+                        socket.write(`Search result: ${JSON.stringify(booksResult, null, 2)}\n`);
+                        break;
+                    case "publishers":
+                        const publisherResult = publishersController.searchPublisher(searchInfo);
+                        socket.write(`Search result: ${JSON.stringify(publisherResult, null, 2)}\n`);
+                        break;
+                    default:
+                        socket.write("Unrecognized category\n");
+                }
+                break;
+
+                case "EXIT":
+                console.log("Client requested to exit");
+                socket.write("Goodbye!\n");
+                socket.end();  // Cierra la conexión de forma ordenada
+                
+                break;
+
             default:
                 socket.write("Unrecognized command\n");
                 break;
@@ -92,8 +129,12 @@ const server = net.createServer ((socket) => {
     });
 
     socket.on('end', () =>{
-        console.log("\n the client has disconnected");
+        console.log("\nThe client has disconnected.");
     })
+
+    socket.on('close', () => {
+        console.log("\nThe connection has been closed.");
+    });
 
     socket.on('error', (err) =>{
         console.log("Error:", err.message);

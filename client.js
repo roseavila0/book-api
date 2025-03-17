@@ -37,6 +37,9 @@ function promptMenu() {
         console.log("ADD books");
         console.log("GET publishers");
         console.log("ADD publishers");
+        console.log("SEARCH authors");
+        console.log("SEARCH books");
+        console.log("SEARCH publishers");
         console.log("Input 'EXIT' to quit.");
 
 
@@ -45,14 +48,15 @@ function promptMenu() {
    
 
    // Salir del cliente si se ingresa 'exit'
-   if (input === 'EXIT') {
-    console.log("Bye!");
-    rl.close(); // Cerrar la interfaz
-    client.end(); // Cerrar la conexión al servidor
-    return;
-} else if (input.trim() === '') {
+    if (input === 'EXIT') {
+        console.log("Bye!");
+        client.write("EXIT\n"); 
+        rl.close(); // Cerrar la interfaz
+        client.end(); // Cerrar la conexión al servidor
+        return;
+    } else if (input.trim() === '') {
     console.log("Please enter a valid command.");
-} else {
+    } else {
     // Aquí puedes procesar el comando cuando sea válido
     // Esto asegurará que se vuelva a mostrar el menú después de cada interacción
     
@@ -68,27 +72,50 @@ function promptMenu() {
     const category = parts[1];
 
 
-    if (category === "authors") {
-    rl.question("Input an author: ", (authorsName) => {
+        if (category === "authors") {
+        rl.question("Input an author: ", (authorsName) => {
         rl.question("Input the author's nationality: ", (authorsNationality) => {
             client.write(`ADD authors "${authorsName}" "${authorsNationality}"`);
+            });
         });
-    });
     
-    } else if (category === "books") {
+        } else if (category === "books") {
         rl.question("Input the book's title: ", (bookName) => {
             rl.question("Input the book's author: ", (bookAuthor) => {
                 client.write(`ADD books "${bookName}" "${bookAuthor}"`);
             });
         });
    
-    } else if (category === "publishers") {
+        } else if (category === "publishers") {
         rl.question("Input the publisher's name: ", (publisherName) => {
             rl.question("Input the publisher's country: ", (publisherCountry) => {
                 client.write(`ADD publishers "${publisherName}" "${publisherCountry}"`);
             });
         });
 
+    } else if (input.startsWith("SEARCH")) { //o sino verificamos si el comando empieza con SEARCH
+        const parts = input.split(" ");
+        const category = parts[1];
+
+        if (category === "authors") {
+            rl.question("Input an author´s name: ", (authorName) => {
+               // rl.question("Input the author´s nationality: ", (authorNationality) => {
+            client.write(`SEARCH authors "${authorName}" `); // Solo se pasa el nombre para la búsqueda
+            });
+        //});
+        
+        
+            } else if (category === "books") {
+            rl.question("Input the book's title: ", (bookName) => {
+            client.write(`SEARCH books "${bookName}"`);
+            });
+            
+       
+            } else if (category === "publishers") {
+            rl.question("Input the publisher's name: ", (publisherName) => {
+            client.write(`SEARCH publishers "${publisherName}"`);
+            });
+            
     } else {
         console.log("Category not found\n");
         //promptMenu();
@@ -98,8 +125,10 @@ function promptMenu() {
     //promptMenu();
 }
 }
+}
 });
 }
+
  
 
 //manejamos errores 
