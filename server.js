@@ -21,6 +21,7 @@ const server = net.createServer ((socket) => {
 
         //const args = message.split(/\s+/);  // Dividir por espacios
         const args = message.match(/(?:[^\s"]+|"[^"]*")+/g);
+        console.log("Search command:", message);
         console.log('Args:', args);  // Verificar los argumentos
 
         if (!args || args.length < 2) {
@@ -86,21 +87,23 @@ const server = net.createServer ((socket) => {
                 break;
 
             case "SEARCH": // Si el comando es SEARCH
-            console.log("Processing SEARCH command for category:", category); //PARA DEPURAR****
+            //console.log("Processing SEARCH command for category:", category); //PARA DEPURAR****
                  if (args.length < 3) {  // Se necesita al menos un criterio de búsqueda
                     socket.write("Invalid SEARCH command. Please use: SEARCH \"category\" \"search info\"\n");
                     return;
                 }
         
                 const searchInfo = args[2].replace(/"/g, "").trim(); // Eliminar comillas y espacios extra
-                console.log("Search Info: ", searchInfo); // Ver qué se está pasando al buscar //PARA DEPURAR****
+                //console.log("Processing SEARCH command for category:", category);
+                //console.log("Search Info: ", searchInfo); // Ver qué se está pasando al buscar //PARA DEPURAR****
                 
                 switch (category) {
                     case "authors":
-                        const authorsResult = authorsController.searchAuthor(searchInfo);
+                        /*const authorsResult = authorsController.searchAuthor(searchInfo);
                         console.log("Authors Result:", authorsResult);  // Imprime el resultado de búsqueda //PARA DEPURAR****
-                        //socket.write(`Search result: ${JSON.stringify(authorsResult, null, 2)}\n`);
-                        socket.write(authorsResult);
+                        socket.write(`Search result: ${JSON.stringify(authorsResult, null, 2)}\n`); */
+                        const authorsResult = authorsController.searchAuthor(searchInfo) || { error: "Author not found" };
+                        socket.write(JSON.stringify(authorsResult) + "\n");
                         break;
                     case "books":
                         const booksResult = booksController.searchBook(searchInfo);
