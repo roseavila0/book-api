@@ -15,38 +15,35 @@ const dataPath = path.join(__dirname, '../data/publishers.json');
 
     //Función para leer la lista de editoriales
     const readPublishers= () => {
-          // Si el archivo no existe, creamos un archivo vacío con un arreglo
-        if (!fs.existsSync(dataPath)){
+        if (!fs.existsSync(dataPath)){                                                          // Si el archivo no existe, creamos un archivo vacío con un arreglo
         fs.writeFileSync(dataPath, '[]');
         }
-        const data = fs.readFileSync(dataPath, 'utf-8'); //se lee la lista de los autores que estan en la ruta del archio json. //usamos 'utf-8' porque ayudar a convertir la info que viene siendo buffer y nos la da en formato string, osea la vuelve legible.
-        return JSON.parse(data); // la información en formato json se retorna en javascript pero la convertimos usando JSON.parse 
+        const data = fs.readFileSync(dataPath, 'utf-8');                                        //se lee la lista de los autores que estan en la ruta del archio json. //usamos 'utf-8' porque ayudar a convertir la info que viene siendo buffer y nos la da en formato string, osea la vuelve legible.
+        return JSON.parse(data);                                                                // da la información en formato json pero la convertimos a javascrip usando JSON.parse 
     };
 
 
     //función para agregar Editoiales nuevas. 
     const writePublishers= (publisher) => {
-        const publishers = readPublishers(); //leo la lista actual de las editoriales ya registradas.
+        const publishers = readPublishers();                                                     //leo la lista actual de las editoriales ya registradas.
 
         const newPublisher = {
-            id: uuidv4(),   //uso uuidv4 para generar un identificador único
+            id: uuidv4(),                                                                       //uso uuidv4 para generar un identificador único
             name: publisher.name,
             country: publisher.country
         };
 
-        publishers.push(newPublisher);  //agregamos la nueuva editorial a la lista del json (conviertiendo con JSON.stringify a formato json)
-        fs.writeFileSync(dataPath,JSON.stringify(publishers, null,2));  //el null ayuda a que no haya cambios o reemplazos y el 2 ayuda con los espacios en el formato json.
+        publishers.push(newPublisher);                                                           //agregamos la nueva editorial a la lista del json (conviertiendo con JSON.stringify a formato json)
+        fs.writeFileSync(dataPath,JSON.stringify(publishers, null,2));                          //el null ayuda a que no haya cambios o reemplazos y el 2 ayuda con los espacios en el formato json.
         console.log("New publisher added.");
     };
 
     //función para buscar una editorial
     const searchPublisher = (searchInfo) => {
-        const publishersrs = readPublishers(); //leemos la lista de editoriales desde el archivo json
-        const result = publishers.find(publisher =>   //buscamos en el arreglo de editorialss una editorial cuyo nombre sea igual a la que ingresamos para buscar.
-        publisher.name.toLowerCase() === searchInfo.toLowerCase()||
-        publisher.nationality.toLowerCase() === searchInfo.toLowerCase()
-            )
-            return result || { error: "Publisher not found" }; 
+        const publishers = readPublishers();                                                    //leemos la lista de editoriales desde el archivo json
+        const result = publishers.find(publisher =>                                             //buscamos en el arreglo de editoriales una editorial cuyo nombre sea igual a la que ingresamos para buscar.
+        publisher.name.toLowerCase().trim() === searchInfo.toLowerCase().trim());
+            return result || { error: "Publisher not found" };                                   // nos da el resultado de la busqueda si es que esta correcto todo o si hay errs nos muestra un msj de error.
     };
         
 module.exports = {readPublishers, writePublishers, searchPublisher}

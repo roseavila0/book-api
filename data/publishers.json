@@ -18,5 +18,15 @@
     "id": "3eba1010-0eef-466d-ab0b-362c11159eba",
     "name": "Editorial Sudamericana",
     "country": "Argentina"
+  },
+  {
+    "id": "dd14110e-eb2a-4441-b786-a2a5880cde7c",
+    "name": "El conejo",
+    "country": "Ecuador"
+  },
+  {
+    "id": "a7429969-f755-421d-94e4-8ff5f284ab6c",
+    "name": "prueba prueba",
+    "country": "prueba"
   }
 ]

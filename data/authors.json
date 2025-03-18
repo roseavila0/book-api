@@ -16,7 +16,7 @@
   },
   {
     "id": "81bdd111-527b-4d3c-a739-4667ab340dac",
-    "name": "Gabriel García Márquez ",
+    "name": "Gabriel García Márquez",
     "nationality": "Colombiano"
   },
   {
@@ -33,5 +33,15 @@
     "id": "79e5b623-60b4-4df6-b70c-2fec63521275",
     "name": "Virginia Woolf",
     "nationality": "Británica"
+  },
+  {
+    "id": "be91d690-cea6-454b-b732-52f50c0d5904",
+    "name": "Sylvia Plath",
+    "nationality": "Estadounidense"
+  },
+  {
+    "id": "3467c7d4-c864-4139-8703-4eb97b14486f",
+    "name": "prueba prueba",
+    "nationality": "prueba"
   }
 ]
