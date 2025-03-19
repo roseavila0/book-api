@@ -19,7 +19,7 @@ const authorsController = {
             return responseFormatter({ error: "Invalid author data" });
         }
         writeAuthors(newAuthor);                                                //si la info es correcta, se guarda el autor.
-        return responseFormatter({newAuthor});                                  // Retornamos el nuevo autor que fue agregado.
+        return responseFormatter({newAuthor});                                  // Retornamos el nuevo autor que fue agregado.   
     },
 
     //Buscamos un autor

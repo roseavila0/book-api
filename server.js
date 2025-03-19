@@ -61,23 +61,23 @@ const server = net.createServer ((socket) => {
                     case "authors":
                         const nationality = additionalInfo;
                         const newAuthor = authorsController.writeAuthors({ name, nationality });    //estos son los parametros de newAuthor
-                        socket.write(`Author added: ${JSON.stringify(newAuthor)}\n`);          //se envia la info al client 
-                        break;
+                        socket.write(`Author added: ${JSON.stringify(newAuthor, null, 2)}\n`);                //se envia la info del author agregado al client  
+                         break;
 
                     case "books":
                         const author = additionalInfo;
-                        const newBook = booksController.writeBooks({ name, author });
+                        const newBook = booksController.writeBooks({ name, author });               //estos son los parametros de newBook
                         socket.write(`Book added: ${JSON.stringify(newBook)}\n`);
                         break;
 
                     case "publishers":
                         const country = additionalInfo;
-                        const newPublisher = publishersController.writePublishers({ name, country });
+                        const newPublisher = publishersController.writePublishers({ name, country });   //estos son los parametros de newPublisher
                         socket.write(`Publisher added: ${JSON.stringify(newPublisher)}\n`);
                         break;
 
                     default:
-                        socket.write("Unrecognized category\n");
+                        socket.write("Unrecognized category\n");                                        // Mensaje de error si el comando no es válido
                 }
                 break;
 
@@ -86,13 +86,13 @@ const server = net.createServer ((socket) => {
                     socket.write("Invalid SEARCH command. Please use: SEARCH \"category\" \"search info\"\n");  
                     return;
                 }
-               const searchInfo = args[2].replace(/"/g, "").trim();      
-                //const searchInfo = args[2].trim();                                 //se busca el segundo argumento, le deje para buscar solo por el nombre ya sea de autores,libros o editoriales.
+               const searchInfo = args[2].replace(/"/g, "").trim();                                     //como argumento para searchInfo le deje para buscar solo por el nombre ya sea de autores,libros o editoriales (eso lo pide en la parte del client).
+                                                
                                                                                                         
                                                                                                           
                 switch (category) {
                     case "authors":
-                        const authorsResult = authorsController.searchAuthor(searchInfo);
+                        const authorsResult = authorsController.searchAuthor(searchInfo);                      //busca segun la categoria y entrega la info en formato json.
                         socket.write(`Search result: ${JSON.stringify(authorsResult, null, 2)}\n`);
                         break;
                     case "books":
@@ -104,34 +104,34 @@ const server = net.createServer ((socket) => {
                         socket.write(`Search result: ${JSON.stringify(publisherResult, null, 2)}\n`);
                         break;
                     default:
-                        socket.write("Unrecognized category\n");
+                        socket.write("Unrecognized category\n");                                             // Mensaje de error si el comando no es válido
                         
                 }
                 break;
 
                 case "EXIT":
-                console.log("Client requested to exit");
-                socket.write("Goodbye!\n");
-                socket.end();  // Cierra la conexión de forma ordenada
+                console.log("Client requested to exit");                                                    //Se muestras un mensaje en consola cuando el cliente quiere salir
+                socket.write("Goodbye!\n");                                                                 // Enviamos un mensaje de despedida al cliente
+                socket.end();                                                                              //Se Cierra la conexión de forma ordenada
                 
                 break;
 
             default:
-                socket.write("Unrecognized command\n");
+                socket.write("Unrecognized command\n");                                                   //Mensaje de error si el comando no es válido
                 break;
         }
     });
 
     socket.on('end', () =>{
-        console.log("\nThe client has disconnected.");
+        console.log("\nThe client has disconnected.");                                                    // Mensaje en consola cuando el cliente se desconecta
     })
 
     socket.on('close', () => {
-        console.log("\nThe connection has been closed.");
+        console.log("\nThe connection has been closed.");                                                // Mensaje cuando la conexión ha sido cerrada
     });
 
     socket.on('error', (err) =>{
-        console.log("Error:", err.message);
+        console.log("Error:", err.message);                                                               // Captura y muestra errores de la conexión
     })
 
 });
