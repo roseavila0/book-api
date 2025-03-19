@@ -35,8 +35,6 @@ const dataPath = path.join(__dirname, '../data/authors.json');
         authors.push(newAuthor);                                       //agregamos el nuevo autor a la lista del json (convertimos con JSON.stringify a formato json)
         fs.writeFileSync(dataPath,JSON.stringify(authors, null,2));   //el null ayuda a que no haya cambios o reemplazos y el 2 ayuda con los espacios en el formato json.
         console.log("New author added.");
-
-        return newAuthor; // Retornamos el nuevo autor que fue agregado //ESTOY PROBANDO
     };
 
 
